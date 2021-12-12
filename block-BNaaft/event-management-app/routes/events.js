@@ -89,4 +89,30 @@ router.get('/:id/dislike', (req, res) => {
   });
 });
 
+//Delete event
+
+router.get('/:id/delete', (req, res, next) => {
+  let id = req.params.id;
+  Event.findByIdAndDelete(id, (err, deletedEvent) => {
+    if(err){
+      return next(err);
+    }
+    Remark.deleteMany({$exists: {eventId: id}}, (err, deletedRemarks) => {
+      if(err){
+        return next(err);
+      }
+      Category.updateMany({eventId: id}, {$pull: {eventId: id}},(err, updatedCategories) => {
+        if(err){
+          return next(err);
+        }
+        res.redirect('/events');
+      })
+    })
+  })
+})
+
+router.get('/puta', (req, res, next) => {
+  req.send('hi');
+})
+
 module.exports = router;
