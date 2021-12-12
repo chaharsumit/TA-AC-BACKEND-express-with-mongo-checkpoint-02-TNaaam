@@ -10,6 +10,8 @@
   
   <h1>welcome to events home</h1>
   <a href="/events/new">create a new event</a>
+  <a href="/filter/oldest">oldest</a>
+  <a href="/filter/latest">latest</a>
 
   <% categories.forEach(category => { %>
     <a href="/categories/<%= category.id %>"><%= category.categoryName %></a>
@@ -22,5 +24,6 @@
       <p>host name : <%= event.host %></p>
     </div>
   <% }) %>
+
 </body>
 </html>

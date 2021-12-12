@@ -9,6 +9,7 @@ var indexRouter = require('./routes/index');
 var eventsRouter = require('./routes/events');
 var remarksRouter = require('./routes/remarks');
 var categoriesRouter = require('./routes/categories');
+var filterRouter = require('./routes/filter');
 
 mongoose.connect('mongodb://localhost/events', (err) => {
   console.log(err ? err : "Database is connected successfully");
@@ -30,6 +31,7 @@ app.use('/', indexRouter);
 app.use('/events', eventsRouter);
 app.use('/remarks', remarksRouter);
 app.use('/categories', categoriesRouter);
+app.use('/filter', filterRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
