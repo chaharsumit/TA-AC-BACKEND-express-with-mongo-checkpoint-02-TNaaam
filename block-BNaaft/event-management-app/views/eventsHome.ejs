@@ -11,6 +11,10 @@
   <h1>welcome to events home</h1>
   <a href="/events/new">create a new event</a>
 
+  <% categories.forEach(category => { %>
+    <a href="/categories/<%= category.id %>"><%= category.categoryName %></a>
+  <% }) %>
+
   <% events.forEach(event => { %>
     <div>
       <a href="/events/<%= event.id %>">Event Name : <%= event.title %></a>

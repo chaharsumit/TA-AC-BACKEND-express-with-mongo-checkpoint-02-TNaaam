@@ -15,8 +15,8 @@
   <a href="/events/<%= event.id %>/like">like</a>
   <a href="/events/<%= event.id %>/dislike">dislike</a>
   <h3>Categories</h3>
-  <% event.event_categories.forEach(cat => { %>
-    <a href=""><%= cat.categoryName %></a>
+  <% event.event_categories.forEach(category => { %>
+    <a href="/categories/<%= category.id %>"><%= category.categoryName %></a>
   <% }) %>
   <h3>Add Remarks</h3>
   <form action="/events/<%= event.id %>/remarks" method="POST">
@@ -32,6 +32,7 @@
     <p>likes: <%= remark.remarkLikes %></p>
     <a href="/remarks/<%= remark.id %>/like">like</a>
     <a href="/remarks/<%= remark.id %>/dislike">dislike</a>
+    <a href="/remarks/<%= remark.id %>/edit">edit remark</a>
     <a href="/remarks/<%= remark.id %>/delete">delete remark</a>
   <% }) %>
 </body>

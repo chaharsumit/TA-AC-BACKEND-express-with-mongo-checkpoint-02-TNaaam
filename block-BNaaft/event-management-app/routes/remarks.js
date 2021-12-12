@@ -23,4 +23,24 @@ router.get('/:id/dislike', (req, res) => {
   })
 })
 
+router.get('/:id/edit', (req, res) => {
+  let id = req.params.id;
+  Remark.findById(id, (err, remark) => {
+    if(err){
+      return next(err);
+    }
+    res.render('editRemark', { remark: remark });
+  })
+})
+
+router.post('/:id/edit', (req, res) => {
+  let id = req.params.id;
+  Remark.findByIdAndUpdate(id, req.body, (err, updatedRemark) => {
+    if(err){
+      return next(err);
+    }
+    res.redirect('/events/' + updatedRemark.eventId);
+  })
+})
+
 module.exports = router;

@@ -10,7 +10,9 @@ router.get('/', (req, res) => {
     if(err){
       return next(err);
     }
-    res.render('eventsHome', { events: events });
+    Category.find({}, (err, categories) => {
+      res.render('eventsHome', { events: events, categories: categories });
+    })
   });
 })
 
