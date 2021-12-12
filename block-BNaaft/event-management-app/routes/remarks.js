@@ -1,5 +1,6 @@
 let express = require('express');
 const Remark = require('../models/remark');
+const Event = require('../models/event');
 
 let router = express.Router();
 
@@ -40,6 +41,21 @@ router.post('/:id/edit', (req, res) => {
       return next(err);
     }
     res.redirect('/events/' + updatedRemark.eventId);
+  })
+})
+
+router.get('/:id/delete', (req, res) => {
+  let id = req.params.id;
+  Remark.findByIdAndDelete(id, (err, deletedRemark) => {
+    if(err){
+      return next(err);
+    }
+    Event.findByIdAndUpdate(deletedRemark.eventId, {$pull: {remarks: deletedRemark.id}}, (err, updatedEvent) => {
+      if(err){
+        return next(err);
+      }
+      res.redirect('/events/' + deletedRemark.eventId);
+    })
   })
 })
 
