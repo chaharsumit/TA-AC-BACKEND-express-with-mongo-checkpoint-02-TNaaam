@@ -2,6 +2,7 @@ let express = require('express');
 let Category = require('../models/category');
 let Event = require('../models/event');
 let Remark = require('../models/remark');
+let Location = require('../models/location');
 
 let router = express.Router();
 
@@ -11,7 +12,15 @@ router.get('/', (req, res) => {
       return next(err);
     }
     Category.find({}, (err, categories) => {
-      res.render('eventsHome', { events: events, categories: categories });
+      if(err){
+        return next(err);
+      }
+      Location.find({}, (err, locations) => {
+        if(err){
+          return next(err);
+        }
+        res.render('eventsHome', { events: events, categories: categories, locations: locations });
+      })
     })
   });
 })
@@ -47,7 +56,41 @@ router.post('/', (req, res, next) => {
         })
       })
     }
-    res.redirect('/events');
+    req.body.locationName = req.body.location;
+    Location.findOne({$exists: {locationName: req.body.location}}, (err, location) => {
+      if(err){
+        return next(err);
+      }else if(!location){
+        Location.create(req.body, (err, newLocation) => {
+          if(err){
+            return next(err);
+          }
+          Location.findByIdAndUpdate(newLocation.id, {$push: {eventId: event.id}}, (err, updatedLocation) => {
+            if(err){
+              return next(err);
+            }
+            Event.findByIdAndUpdate(event.id, {$push: {locationId: updatedLocation.id}}, (err, updatedEvent) => {
+              if(err){
+                return next(err);
+              }
+              res.redirect('/events');
+            })
+          });
+        });
+      }else{
+        Location.findByIdAndUpdate(location.id, {$push: {eventId: event.id}}, (err, updatedLocation) => {
+          if(err){
+            return next(err);
+          }
+          Event.findByIdAndUpdate(event.id, {$push: {locationId: updatedLocation.id}}, (err, updatedEvent) => {
+            if(err){
+              return next(err);
+            }
+            res.redirect('/events');
+          })
+        })
+      }
+    });
   })
 });
 
@@ -105,14 +148,15 @@ router.get('/:id/delete', (req, res, next) => {
         if(err){
           return next(err);
         }
-        res.redirect('/events');
+        Location.findOneAndUpdate({$exists: {eventId: id}}, {$pull: {eventId: id}}, (err, updatedLocation) => {
+          if(err){
+            return next(err);
+          }
+          res.redirect('/events');
+        })
       })
     })
   })
-})
-
-router.get('/puta', (req, res, next) => {
-  req.send('hi');
 })
 
 module.exports = router;

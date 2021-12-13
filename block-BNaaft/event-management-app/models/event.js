@@ -11,7 +11,8 @@ let eventSchema = new Schema({
   event_categories: [{ type: Schema.Types.ObjectId, ref: "Category" }],
   location: String,
   likes: { type: Number, default: 0 },
-  remarks: [{ type: Schema.Types.ObjectId, ref: "Remark" }]
+  remarks: [{ type: Schema.Types.ObjectId, ref: "Remark" }],
+  locationId: [{ type: Schema.Types.ObjectId, ref: "Location" }]
 }, { timestamps: true });
 
 let Event = mongoose.model('Event', eventSchema);
