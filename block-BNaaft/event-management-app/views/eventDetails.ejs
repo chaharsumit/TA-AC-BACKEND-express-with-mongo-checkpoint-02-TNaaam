@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body>
+  <h1>Event Title : <%= event.title %></h1>
+  <h2>Event Host : <%= event.host %></h2>
+  <h3>Event Summary</h3>
+  <p><%= event.summary %></p>
+  <p><%= event.likes %></p>
+  <a href="/events/<%= event.id %>/like">like</a>
+  <a href="/events/<%= event.id %>/dislike">dislike</a>
+  <a href="/events/<%= event.id %>/delete">delete event</a>
+  <h3>Categories</h3>
+  <% event.event_categories.forEach(category => { %>
+    <a href="/categories/<%= category.id %>"><%= category.categoryName %></a>
+  <% }) %>
+  <h3>Add Remarks</h3>
+  <form action="/events/<%= event.id %>/remarks" method="POST">
+    <input type="text" name="author" placeholder="author name">
+    <textarea name="remarkTitle" cols="30" rows="10" placeholder="Type remark here"></textarea>
+    <input type="submit" value="Add Remark">
+  </form>
+
+  <h3>Remarks</h3>
+  <% event.remarks.forEach(remark => { %>
+    <p><%= remark.remarkTitle %></p>
+    <p>remark by: <%= remark.author %></p>
+    <p>likes: <%= remark.remarkLikes %></p>
+    <a href="/remarks/<%= remark.id %>/like">like</a>
+    <a href="/remarks/<%= remark.id %>/dislike">dislike</a>
+    <a href="/remarks/<%= remark.id %>/edit">edit remark</a>
+    <a href="/remarks/<%= remark.id %>/delete">delete remark</a>
+  <% }) %>
+</body>
+</html>
