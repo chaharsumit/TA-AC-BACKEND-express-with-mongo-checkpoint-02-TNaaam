@@ -5,6 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
 </head>
 <body>
   
@@ -13,15 +14,25 @@
   <a href="/filter/oldest">oldest</a>
   <a href="/filter/latest">latest</a>
 
+  <h2>Search By Locations</h2>
+
+  <% locations.forEach(location => { %>
+    <a href="/filter/<%= location.id %>"><%= location.locationName %></a>
+  <% }) %>
+  
+
+  <h2>Search By Categories</h2>
   <% categories.forEach(category => { %>
     <a href="/categories/<%= category.id %>"><%= category.categoryName %></a>
   <% }) %>
 
+  <h2>Events list</h2>
   <% events.forEach(event => { %>
-    <div>
+    <div class="event-info">
       <a href="/events/<%= event.id %>">Event Name : <%= event.title %></a>
       <p><%= event.summary %></p>
       <p>host name : <%= event.host %></p>
+      <p>start: <%= event.start_date %> end: <%= event.end_date %></p>
     </div>
   <% }) %>
 
